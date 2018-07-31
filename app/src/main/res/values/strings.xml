@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CallDiary</string>
+    <string name="title_activity_main">Call Diary</string>
+    <string name="add_notes_title">Write down about your conversation</string>
 </resources>
