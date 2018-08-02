@@ -1,8 +1,15 @@
 package softfruit.solutions.calldiary.activity
 
+import android.Manifest
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,8 +25,13 @@ import softfruit.solutions.calldiary.R
 import softfruit.solutions.calldiary.adapter.CallListAdapter
 import softfruit.solutions.calldiary.callback.DoneCallback
 import softfruit.solutions.calldiary.model.CallObject
+import android.provider.ContactsContract
+import android.net.Uri.withAppendedPath
+import softfruit.solutions.calldiary.extra.PermissionUtils
 
-class MainActivity : AppCompatActivity(),DoneCallback {
+
+class MainActivity : AppCompatActivity(),DoneCallback,PermissionUtils.PermissionAskListener {
+
 
     lateinit var recyclerView:RecyclerView
     lateinit var completedListRecyclerView:RecyclerView
@@ -37,6 +49,10 @@ class MainActivity : AppCompatActivity(),DoneCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        checkPermissions()
+
+//        checkPermissionsUtility()
 
         items = ArrayList()
         itemsCompleted = ArrayList()
@@ -149,4 +165,89 @@ class MainActivity : AppCompatActivity(),DoneCallback {
         intent.putExtra("id",id)
         startActivity(intent)
     }
+
+
+
+    override fun getContactName(number: String): String {
+        return getContactName(number,this)
+    }
+
+
+    fun checkPermissions():Boolean {
+
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    100)
+
+        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_PHONE_STATE
+                )
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.READ_PHONE_STATE),
+                    101)
+
+        }
+        return true
+    }
+
+
+    fun getContactName(phoneNumber: String, context: Context): String {
+
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED) {
+            val uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber))
+            val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
+
+            var contactName = ""
+            val cursor = context.getContentResolver().query(uri, projection, null, null, null)
+
+            if (cursor != null) {
+                if (cursor!!.moveToFirst()) {
+                    contactName = cursor!!.getString(0)
+                }
+                cursor!!.close()
+            }
+
+            return contactName
+
+
+        }
+        return ""
+                }
+
+
+    fun checkPermissionsUtility(){
+        PermissionUtils.checkPermission(this,Manifest.permission.READ_PHONE_STATE,this)
+        PermissionUtils.checkPermission(this,Manifest.permission.READ_CONTACTS,this)
+    }
+
+    override fun onNeedPermission(p:String) {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(p),
+                101)
+    }
+
+    override fun onPermissionPreviouslyDenied(p:String) {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(p),
+                101)
+    }
+
+    override fun onPermissionDisabled() {
+
+    }
+
+    override fun onPermissionGranted(p:String) {
+
+    }
+
 }

@@ -3,11 +3,12 @@
     package="softfruit.solutions.calldiary">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".CallDiary"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -32,7 +33,7 @@
         <activity
             android:label="@string/add_notes_title"
             android:name=".activity.AddNotes"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
+            android:theme="@style/AppTheme.DialogTheme">
 
         </activity>
     </application>

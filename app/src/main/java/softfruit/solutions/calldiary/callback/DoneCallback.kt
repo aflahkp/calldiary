@@ -7,4 +7,5 @@ interface DoneCallback {
     fun doneItem(item:CallObject)
     fun unDoneItem(item:CallObject)
     fun editItem(id:Long)
+    fun getContactName(number:String):String
 }

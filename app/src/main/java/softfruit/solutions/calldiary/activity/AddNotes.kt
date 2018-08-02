@@ -87,8 +87,6 @@ class AddNotes : AppCompatActivity() {
     }
 
     fun save(view: View){
-        if (noteEditText.text.toString().trim()!="") {
-
             if(!isEdit || callObject == null){
                 callObject = CallObject()
                 callObject.number = number
@@ -115,8 +113,6 @@ class AddNotes : AppCompatActivity() {
             }
                 startActivity(intent)
             finish()
-        }
-
     }
 
     fun cancel(view: View){

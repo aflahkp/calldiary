@@ -43,7 +43,7 @@ class CallListAdapter(callBack:DoneCallback,items:ArrayList<CallObject>): Recycl
             holder.notes.text = item.notes
         }
 
-        holder.caller.text = item.number + "    " + item.date
+        holder.caller.text = callback.getContactName(item.number)+ "("+ item.number + ")" + "    " + item.date
 
         listenToCheck = false
         holder.checkBox.isChecked = item.isDone
