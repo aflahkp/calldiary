@@ -1,4 +1,4 @@
-package softfruit.solutions.calldiary
+package com.muod.calldiary
 
 import org.junit.Test
 

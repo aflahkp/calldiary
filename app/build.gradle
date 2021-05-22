@@ -11,7 +11,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "softfruit.solutions.calldiary"
+        applicationId "com.muod.calldiary"
         minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
